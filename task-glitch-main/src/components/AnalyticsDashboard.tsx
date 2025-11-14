@@ -69,5 +69,3 @@ export default function AnalyticsDashboard({ tasks }: Props) {
     </Card>
   );
 }
-
-
