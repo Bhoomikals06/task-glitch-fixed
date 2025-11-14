@@ -1,5 +1,3 @@
-import { Card, CardContent, List, ListItem, ListItemText, Typography } from '@mui/material';
-
 export interface ActivityItem {
   id: string;
   ts: number;
@@ -30,5 +28,3 @@ export default function ActivityLog({ items }: Props) {
     </Card>
   );
 }
-
-
