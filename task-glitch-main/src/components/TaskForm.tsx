@@ -68,20 +68,30 @@ export default function TaskForm({ open, onClose, onSubmit, existingTitles, init
     !!status;
 
   const handleSubmit = () => {
-    const safeTime = typeof timeTaken === 'number' && timeTaken > 0 ? timeTaken : 1; // auto-correct
-    const payload: Omit<Task, 'id'> & { id?: string } = {
-      title: title.trim(),
-      revenue: typeof revenue === 'number' ? revenue : 0,
-      timeTaken: safeTime,
-      priority: ((priority || 'Medium') as Priority),
-      status: ((status || 'Todo') as Status),
-      notes: notes.trim() || undefined,
-      ...(initial ? { id: initial.id } : {}),
-    };
-    onSubmit(payload);
-    onClose();
+  // Safe time validation (avoid division by zero)
+  const safeTime =
+    typeof timeTaken === 'number' && timeTaken > 0 ? timeTaken : 1;
+
+  const payload: Omit<Task, 'id'> & { id?: string } = {
+    title: title.trim(),
+    revenue: typeof revenue === 'number' ? revenue : 0,
+    timeTaken: safeTime,
+    priority: (priority || 'Medium') as Priority,
+    status: (status || 'Todo') as Status,
+    notes: notes.trim() || undefined,
+
+    // Required field by your Task type
+    createdAt: initial?.createdAt
+      ? initial.createdAt
+      : new Date().toISOString(),
+
+    // If editing an existing task → keep ID
+    ...(initial ? { id: initial.id } : {}),
   };
 
+  onSubmit(payload);
+  onClose();
+};
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>{initial ? 'Edit Task' : 'Add Task'}</DialogTitle>
