@@ -15,7 +15,7 @@ export default function TaskDetailsDialog({ open, task, onClose, onSave }: Props
   const [timeTaken, setTimeTaken] = useState<number | ''>('');
   const [notes, setNotes] = useState('');
 
-  useEffect(() => {
+   useEffect(() => {
     if (!open || !task) return;
     setRevenue(task.revenue);
     setTimeTaken(task.timeTaken);
@@ -23,6 +23,7 @@ export default function TaskDetailsDialog({ open, task, onClose, onSave }: Props
   }, [open, task]);
 
   if (!task) return null;
+
 
   const handleSave = () => {
     onSave(task.id, {
